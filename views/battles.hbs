@@ -1,1 +1,102 @@
+<body id="battlesBody">
 
+  <h1>Battles</h1>
+
+  [
+  <a href="regions">Regions</a>
+  |
+  <a href="houses">Houses</a>
+  |
+  <a href="subjects">Subjects</a>
+  |
+  <a href="battles">Battles</a>
+  |
+  <a href="houses_battles">Houses and Battles</a>]
+  <br /><br />
+
+  <div id="browse" style="display: block">
+
+    {{! Create a table }}
+    <table id="battle-table">
+
+      {{! Header section }}
+      <thead>
+
+        {{! For just the first row, we print each key of the row object as a header cell so we
+          know what each column means when the page renders }}
+        <tr>
+          <th>Battle ID</th>
+          <th>Battle Name</th>
+          <th>Region</th>
+          <th>Winners</th>
+          <th>Losers</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+
+      {{! Body section }}
+      <tbody>
+
+        {{! For each row, print the regionID and regionName in order }}
+        {{#each data}}
+          <tr data-value={{this.battleID}}>
+            <td>{{this.battleID}}</td>
+            <td>{{this.battleName}}</td>
+            <td>{{this.regionName}}</td>
+            <td>{{this.winners}}</td>
+            <td>{{this.losers}}</td>
+            <td><button
+                onclick="deleteBattle({{this.battleID}})"
+              >Delete</button></td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+
+    <script src="./js/delete_battle.js"></script>
+
+  </div>
+
+  <!-- /views/regions.hbs -->
+  <h2>Add Battle</h2>
+  <form id="add-battle-form" method="POST" action="/add-battle-form">
+    <label for="input-battleName">Battle Name: </label>
+    <input type="text" name="input-battleName" id="input-battleName" />
+
+    <label for="input-regionID">Region: </label>
+    <select name="input-regionName" id="input-regionID">
+      <option value="test1">Select a Region</option>
+      {{#each regions}}
+        <option value="{{this.regionID}}">{{this.regionName}}</option>
+      {{/each}}
+    </select>
+
+    <br /><br />
+
+    <label for="input-winners">Select the Winner(s): </label>
+    <select name="input-winners" id="input-winners" multiple size="6">
+      <option value="test2"></option>
+      {{#each houses}}
+        <option value="{{this.houseName}}">{{this.houseName}}</option>
+      {{/each}}
+    </select>
+
+    <br /><br />
+
+    <label for="input-losers">Select the Loser(s): </label>
+    <select name="input-losers" id="input-losers" multiple size="6">
+      <option value="test3"></option>
+      {{#each houses}}
+        <option value="{{this.houseName}}">{{this.houseName}}</option>
+      {{/each}}
+    </select>
+
+    <br /><br />
+
+    <input type="submit" />
+  </form>
+
+</body>
+
+{{! Embed our javascript to handle the DOM manipulation and AJAX request }}
+<script src="./js/add_battle.js"></script>

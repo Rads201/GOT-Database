@@ -1,0 +1,60 @@
+<body id="regionsBody">
+
+  <h1>Regions</h1>
+
+  [
+  <a href="regions">Regions</a>
+  |
+  <a href="houses">Houses</a>
+  |
+  <a href="subjects">Subjects</a>
+  |
+  <a href="battles">Battles</a>
+  |
+  <a href="houses_battles">Houses and Battles</a>]
+  <br /><br />
+
+  <div id="browse" style="display: block">
+
+    {{! Create a table }}
+    <table id="region-table">
+
+      {{! Header section }}
+      <thead>
+
+        {{! For just the first row, we print each key of the row object as a header cell so we
+        know what each column means when the page renders }}
+        <tr>
+          <th>Region ID</th>
+          <th>Region Name</th>
+        </tr>
+      </thead>
+
+      {{! Body section }}
+      <tbody>
+
+        {{! For each row, print the regionID and regionName in order }}
+        {{#each data}}
+          <tr data-value={{this.regionID}}>
+            <td>{{this.regionID}}</td>
+            <td>{{this.regionName}}</td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+
+  </div>
+
+  <!-- /views/regions.hbs -->
+  <h2>Add Region</h2>
+  <form id="add-region-form" method="POST" action="/add-region-form">
+    <label for="input-regionName">Region Name: </label>
+    <input type="text" name="input-regionName" id="input-regionName" />
+
+    <input type="submit" />
+  </form>
+
+</body>
+
+{{! Embed our javascript to handle the DOM manipulation and AJAX request }}
+<script src="./js/add_region.js"></script>
