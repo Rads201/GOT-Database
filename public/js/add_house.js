@@ -1,35 +1,38 @@
 // Get the objects we need to modify
-let addBattleForm = document.getElementById('add-battle-form-ajax');
+let addHouseForm = document.getElementById('add-house-form-ajax');
 
 // Modify the objects we need
-addBattleForm.addEventListener("submit", function (e) {
+addHouseForm.addEventListener("submit", function (e) {
 
     // Prevent the form from submitting
     e.preventDefault();
 
     // Get form fields we need to get data from
-    let inputBattleName = document.getElementById("input-battleName");
+    let inputHouseName = document.getElementById("input-houseName");
+    let inputHouseLord = document.getElementById("input-houseLord");
+    let inputArmySize = document.getElementById("input-armySize");
+    let inputWealth = document.getElementById("input-wealth");
     let inputRegion = document.getElementById("input-regionName");
-    let inputWinners = document.getElementById("input-winners");
-    let inputLosers = document.getElementById("input-losers");
 
     // Get the values from the form fields
-    let battleNameValue = inputBattleName.value;
+    let houseNameValue = inputHouseName.value;
+    let houseLordValue = inputHouseLord.value;
+    let armySizeValue = inputArmySize.value;
+    let wealthValue = inputWealth.value;
     let regionValue = inputRegion.value;
-    let winnersValue = inputWinners.value;
-    let losersValue = inputLosers.value;
 
     // Put our data we want to send in a javascript object
     let data = {
-        battleName: battleNameValue,
-        region: regionValue,
-        winners: winnersValue,
-        losers: losersValue
+        houseName: houseNameValue,
+        houseLord: houseLordValue,
+        armySize: armySizeValue,
+        wealth: wealthValue,
+        region: regionValue
     }
 
     // Setup our AJAX request
     var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "/add-battle-ajax", true);
+    xhttp.open("POST", "/add-house-ajax", true);
     xhttp.setRequestHeader("Content-type", "application/json");
 
     // Tell our AJAX request how to resolve
@@ -40,10 +43,11 @@ addBattleForm.addEventListener("submit", function (e) {
             addRowToTable(xhttp.response);
 
             // Clear the input fields for another transaction
-            inputBattleName.value = '';
+            inputHouseName.value = '';
+            inputHouseLord.value = '';
+            inputArmySize.value = '';
+            inputWealth.value = '';
             inputRegion.value = '';
-            inputWinners.value = '';
-            inputLosers.value = '';
         }
         else if (xhttp.readyState == 4 && xhttp.status != 200) {
             console.log("There was an error with the input.")
@@ -61,7 +65,7 @@ addBattleForm.addEventListener("submit", function (e) {
 addRowToTable = (data) => {
 
     // Get a reference to the current table on the page and clear it out.
-    let currentTable = document.getElementById("battle-table");
+    let currentTable = document.getElementById("house-table");
 
     // Get the location where we should insert the new row (end of table)
     let newRowIndex = currentTable.rows.length;
@@ -70,39 +74,33 @@ addRowToTable = (data) => {
     let parsedData = JSON.parse(data);
     let newRow = parsedData[parsedData.length - 1]
 
-    // Create a row and 6 cells
+    // Create a row and 7 cells
     let row = document.createElement("TR");
-    let battleIDCell = document.createElement("TD");
-    let battleNameCell = document.createElement("TD");
+    let houseIDCell = document.createElement("TD");
+    let houseNameCell = document.createElement("TD");
+    let houseLordCell = document.createElement("TD");
+    let armySizeCell = document.createElement("TD");
+    let wealthCell = document.createElement("TD");
     let regionCell = document.createElement("TD");
-    let winnersCell = document.createElement("TD");
-    let losersCell = document.createElement("TD");
-
-    let deleteCell = document.createElement("TD");
 
     // Fill the cells with correct data
-    battleIDCell.innerText = newRow.battleID;
-    battleNameCell.innerText = newRow.battleName;
+    houseIDCell.innerText = newRow.houseID;
+    houseNameCell.innerText = newRow.houseName;
+    houseLordCell.innerText = newRow.houseLord;
+    armySizeCell.innerText = newRow.armySize;
+    wealthCell.innerText = newRow.wealth;
     regionCell.innerText = newRow.region;
-    winnersCell.innerText = newRow.winners;
-    losersCell.innerText = newRow.losers;
-
-    deleteCell = document.createElement("button");
-    deleteCell.innerHTML = "Delete";
-    deleteCell.onclick = function() {
-        deleteHouse(newRow.battleID);
-    }
 
     // Add the cells to the row 
-    row.appendChild(battleIDCell);
-    row.appendChild(battleNameCell);
+    row.appendChild(houseIDCell);
+    row.appendChild(houseNameCell);
+    row.appendChild(houseLordCell);
+    row.appendChild(armySizeCell);
+    row.appendChild(wealthCell);
     row.appendChild(regionCell);
-    row.appendChild(winnersCell);
-    row.appendChild(losersCell);
-    row.appendChild(deleteCell);
 
     // Add a row attribute so the deleteRow function can find a newly added row
-    row.setAttribute('data-value', newRow.battleID);
+    row.setAttribute('data-value', newRow.houseID);
 
     // Add the row to the table
     currentTable.appendChild(row);
